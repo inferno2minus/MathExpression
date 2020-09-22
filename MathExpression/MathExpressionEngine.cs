@@ -1,6 +1,7 @@
 ﻿using I2M.MathExpression.Exceptions;
 using I2M.MathExpression.Expressions;
 using I2M.MathExpression.Interfaces;
+using I2M.MathExpression.Operations;
 using I2M.MathExpression.Tokenizers;
 using System;
 

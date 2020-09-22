@@ -2,7 +2,7 @@
 using I2M.MathExpression.Tokenizers;
 using System;
 
-namespace I2M.MathExpression
+namespace I2M.MathExpression.Operations
 {
     public class DefaultOperationFactory : IOperationFactory
     {
