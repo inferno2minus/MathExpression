@@ -12,7 +12,7 @@ namespace I2M.MathExpression.Tokenizers
         {
             while (char.IsWhiteSpace(CurrentChar))
             {
-                NextChar();
+                NextCharCore();
             }
 
             NextTokenCore();
@@ -20,13 +20,8 @@ namespace I2M.MathExpression.Tokenizers
 
         public void Init()
         {
-            NextChar();
-            NextToken();
-        }
-
-        private void NextChar()
-        {
             NextCharCore();
+            NextTokenCore();
         }
 
         protected abstract void NextTokenCore();
