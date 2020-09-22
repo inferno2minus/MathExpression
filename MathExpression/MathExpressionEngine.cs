@@ -110,6 +110,8 @@ namespace I2M.MathExpression
 
                 var leaf = ParseHighPriority(tokenizer);
 
+                if (tokenizer.CurrentToken.Type != TokenType.RightBracket) throw new ParseMathExpressionException("Missing closing bracket");
+
                 tokenizer.NextToken();
 
                 return leaf;
