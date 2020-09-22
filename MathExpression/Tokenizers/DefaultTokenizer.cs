@@ -24,6 +24,8 @@ namespace I2M.MathExpression.Tokenizers
 
         protected override void NextTokenCore()
         {
+            CurrentToken.Type = TokenType.Unknown;
+
             switch (CurrentChar)
             {
                 case Eof:
