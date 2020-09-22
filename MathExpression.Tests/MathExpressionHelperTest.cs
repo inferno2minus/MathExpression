@@ -1,5 +1,7 @@
 using FluentAssertions;
+using I2M.MathExpression.Exceptions;
 using I2M.MathExpression.Helpers;
+using System;
 using Xunit;
 
 namespace I2M.MathExpression.Tests
@@ -31,6 +33,23 @@ namespace I2M.MathExpression.Tests
 
             // Assert
             result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("!10", "Unexpected token: Unknown")]
+        [InlineData("10 ! 10", "Unexpected token: Unknown")]
+        [InlineData("10 * 20 ! 30", "Unexpected token: Unknown")]
+        [InlineData("10 - (20 ! 2)", "Unexpected token: Unknown")]
+        [InlineData("(10 - 20) ! 2", "Unexpected token: Unknown")]
+        [InlineData("10 - (20 + 1", "Missing closing bracket")]
+
+        public void ParseExpression_InvalidExpression_ThrowsMathExpressionParseException(string value, string expected)
+        {
+            // Act
+            Action result = () => MathExpressionHelper.Parse(value);
+
+            // Assert
+            result.Should().Throw<MathExpressionParseException>().WithMessage(expected);
         }
     }
 }
