@@ -7,6 +7,14 @@ namespace I2M.MathExpression.Tokenizers
 {
     public class DefaultTokenizer : BaseTokenizer
     {
+        private const char Eof = '\0';
+        private const char Add = '+';
+        private const char Subtract = '-';
+        private const char Multiply = '*';
+        private const char Divide = '/';
+        private const char LeftBracket = '(';
+        private const char RightBracket = ')';
+
         private readonly TextReader _reader;
 
         public DefaultTokenizer(TextReader reader)
@@ -18,30 +26,30 @@ namespace I2M.MathExpression.Tokenizers
         {
             switch (CurrentChar)
             {
-                case '\0':
+                case Eof:
                     CurrentToken.Type = TokenType.Eof;
                     return;
-                case '+':
+                case Add:
                     NextCharCore();
                     CurrentToken.Type = TokenType.Add;
                     return;
-                case '-':
+                case Subtract:
                     NextCharCore();
                     CurrentToken.Type = TokenType.Subtract;
                     return;
-                case '*':
+                case Multiply:
                     NextCharCore();
                     CurrentToken.Type = TokenType.Multiply;
                     return;
-                case '/':
+                case Divide:
                     NextCharCore();
                     CurrentToken.Type = TokenType.Divide;
                     return;
-                case '(':
+                case LeftBracket:
                     NextCharCore();
                     CurrentToken.Type = TokenType.LeftBracket;
                     return;
-                case ')':
+                case RightBracket:
                     NextCharCore();
                     CurrentToken.Type = TokenType.RightBracket;
                     return;
@@ -69,7 +77,7 @@ namespace I2M.MathExpression.Tokenizers
         {
             var currentChar = _reader.Read();
 
-            CurrentChar = currentChar < 0 ? '\0' : (char)currentChar;
+            CurrentChar = currentChar < 0 ? Eof : (char)currentChar;
         }
     }
 }
