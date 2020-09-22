@@ -9,7 +9,7 @@ namespace I2M.MathExpression.Extensions
         {
             if (value?.Type != TokenType.Eof)
             {
-                throw new MathExpressionParseException("Unexpected characters at end of expression");
+                throw new ExpressionParseException("Unexpected characters at end of expression");
             }
         }
 
@@ -17,7 +17,7 @@ namespace I2M.MathExpression.Extensions
         {
             if (value?.Type != TokenType.RightBracket)
             {
-                throw new MathExpressionParseException("Missing closing bracket");
+                throw new ExpressionParseException("Missing closing bracket");
             }
         }
 
@@ -25,7 +25,7 @@ namespace I2M.MathExpression.Extensions
         {
             if (value?.Type == TokenType.Unknown)
             {
-                throw new MathExpressionParseException($"Unexpected token: {value.Type}");
+                throw new ExpressionParseException($"Unexpected token: {value.Type}");
             }
         }
     }
