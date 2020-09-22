@@ -21,7 +21,7 @@ namespace I2M.MathExpression.Tests
         [InlineData("10 - (20 / 2)", 0)]
         [InlineData("-(10 + (20 / 2))", -20)]
         [InlineData("-((10 + 20) / 2)", -15)]
-        public void CanParseTheory(string value, double expected)
+        public void ParseExpression_ValidExpression_ReturnsExpectedResult(string value, double expected)
         {
             // Arrange
             var expression = MathExpressionHelper.Parse(value);
