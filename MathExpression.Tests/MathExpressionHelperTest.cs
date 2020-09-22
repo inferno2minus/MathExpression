@@ -36,6 +36,7 @@ namespace I2M.MathExpression.Tests
         }
 
         [Theory]
+        [InlineData("10)", "Unexpected characters at end of expression")]
         [InlineData("!10", "Unexpected token: Unknown")]
         [InlineData("10 ! 10", "Unexpected token: Unknown")]
         [InlineData("10 * 20 ! 30", "Unexpected token: Unknown")]
