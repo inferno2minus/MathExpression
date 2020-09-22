@@ -11,8 +11,8 @@ namespace I2M.MathExpression.Helpers
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
-            using var stringReader = new StringReader(value);
-            var tokenizer = new DefaultTokenizer(stringReader);
+            using var reader = new StringReader(value);
+            var tokenizer = new DefaultTokenizer(reader);
             var engine = new MathExpressionEngine();
 
             return engine.ParseExpression(tokenizer);
