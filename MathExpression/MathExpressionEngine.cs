@@ -1,5 +1,6 @@
 ﻿using I2M.MathExpression.Exceptions;
 using I2M.MathExpression.Expressions;
+using I2M.MathExpression.Extensions;
 using I2M.MathExpression.Interfaces;
 using I2M.MathExpression.Operations;
 using I2M.MathExpression.Tokenizers;
@@ -28,7 +29,7 @@ namespace I2M.MathExpression
 
             var expression = ParseHighPriority(tokenizer);
 
-            if (tokenizer.CurrentToken.Type != TokenType.Eof) throw new MathExpressionParseException("Unexpected characters at end of expression");
+            tokenizer.CurrentToken.EnsureEndOfFileTokenType();
 
             return expression;
         }
@@ -36,6 +37,8 @@ namespace I2M.MathExpression
         private IExpression ParseHighPriority(ITokenizer tokenizer)
         {
             var left = ParseLowPriority(tokenizer);
+
+            tokenizer.CurrentToken.EnsureNotUnknownTokenType();
 
             while (true)
             {
@@ -54,6 +57,8 @@ namespace I2M.MathExpression
         private IExpression ParseLowPriority(ITokenizer tokenizer)
         {
             var left = ParseUnary(tokenizer);
+
+            tokenizer.CurrentToken.EnsureNotUnknownTokenType();
 
             while (true)
             {
@@ -110,7 +115,7 @@ namespace I2M.MathExpression
 
                 var leaf = ParseHighPriority(tokenizer);
 
-                if (tokenizer.CurrentToken.Type != TokenType.RightBracket) throw new MathExpressionParseException("Missing closing bracket");
+                tokenizer.CurrentToken.EnsureRightBracketTokenType();
 
                 tokenizer.NextToken();
 
