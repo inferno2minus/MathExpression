@@ -27,7 +27,7 @@ namespace I2M.MathExpression
 
             var expression = ParseHighPriority(tokenizer);
 
-            if (tokenizer.CurrentToken.Type != TokenType.Eof) throw new ParseException("Unexpected characters at end of expression");
+            if (tokenizer.CurrentToken.Type != TokenType.Eof) throw new ParseMathExpressionException("Unexpected characters at end of expression");
 
             return expression;
         }
@@ -114,7 +114,7 @@ namespace I2M.MathExpression
                 return leaf;
             }
 
-            throw new ParseException($"Unexpected token: {tokenizer.CurrentToken.Type}");
+            throw new ParseMathExpressionException($"Unexpected token: {tokenizer.CurrentToken.Type}");
         }
     }
 }
