@@ -28,7 +28,7 @@ namespace I2M.MathExpression
 
             var expression = ParseHighPriority(tokenizer);
 
-            if (tokenizer.CurrentToken.Type != TokenType.Eof) throw new ParseMathExpressionException("Unexpected characters at end of expression");
+            if (tokenizer.CurrentToken.Type != TokenType.Eof) throw new MathExpressionParseException("Unexpected characters at end of expression");
 
             return expression;
         }
@@ -110,14 +110,14 @@ namespace I2M.MathExpression
 
                 var leaf = ParseHighPriority(tokenizer);
 
-                if (tokenizer.CurrentToken.Type != TokenType.RightBracket) throw new ParseMathExpressionException("Missing closing bracket");
+                if (tokenizer.CurrentToken.Type != TokenType.RightBracket) throw new MathExpressionParseException("Missing closing bracket");
 
                 tokenizer.NextToken();
 
                 return leaf;
             }
 
-            throw new ParseMathExpressionException($"Unexpected token: {tokenizer.CurrentToken.Type}");
+            throw new MathExpressionParseException($"Unexpected token: {tokenizer.CurrentToken.Type}");
         }
     }
 }

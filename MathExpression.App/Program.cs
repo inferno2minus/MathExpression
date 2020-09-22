@@ -25,7 +25,7 @@ namespace I2M.MathExpression.App
 
                     Console.WriteLine($"Your result: {result}");
                 }
-                catch (ParseMathExpressionException ex)
+                catch (MathExpressionParseException ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
