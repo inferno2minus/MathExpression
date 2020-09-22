@@ -122,7 +122,7 @@ namespace I2M.MathExpression
                 return leaf;
             }
 
-            throw new MathExpressionParseException($"Unexpected token: {tokenizer.CurrentToken.Type}");
+            throw new ExpressionParseException($"Unexpected token: {tokenizer.CurrentToken.Type}");
         }
     }
 }

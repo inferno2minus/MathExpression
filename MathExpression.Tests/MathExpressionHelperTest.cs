@@ -50,7 +50,7 @@ namespace I2M.MathExpression.Tests
             Action result = () => MathExpressionHelper.Parse(value);
 
             // Assert
-            result.Should().Throw<MathExpressionParseException>().WithMessage(expected);
+            result.Should().Throw<ExpressionParseException>().WithMessage(expected);
         }
     }
 }
