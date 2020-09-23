@@ -36,7 +36,7 @@ namespace I2M.MathExpression
 
         private IExpression ParseHighPriority(ITokenizer tokenizer)
         {
-            var left = ParseLowPriority(tokenizer);
+            var leftExpression = ParseLowPriority(tokenizer);
 
             tokenizer.CurrentToken.EnsureNotUnknownTokenType();
 
@@ -44,19 +44,19 @@ namespace I2M.MathExpression
             {
                 var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
 
-                if (operation == null) return left;
+                if (operation == null) return leftExpression;
 
                 tokenizer.NextToken();
 
-                var right = ParseLowPriority(tokenizer);
+                var rightExpression = ParseLowPriority(tokenizer);
 
-                left = new BinaryExpression(left, right, operation);
+                leftExpression = new BinaryExpression(leftExpression, rightExpression, operation);
             }
         }
 
         private IExpression ParseLowPriority(ITokenizer tokenizer)
         {
-            var left = ParseUnary(tokenizer);
+            var leftExpression = ParseUnary(tokenizer);
 
             tokenizer.CurrentToken.EnsureNotUnknownTokenType();
 
@@ -64,13 +64,13 @@ namespace I2M.MathExpression
             {
                 var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
 
-                if (operation == null) return left;
+                if (operation == null) return leftExpression;
 
                 tokenizer.NextToken();
 
-                var right = ParseUnary(tokenizer);
+                var rightExpression = ParseUnary(tokenizer);
 
-                left = new BinaryExpression(left, right, operation);
+                leftExpression = new BinaryExpression(leftExpression, rightExpression, operation);
             }
         }
 
@@ -89,9 +89,9 @@ namespace I2M.MathExpression
                 {
                     tokenizer.NextToken();
 
-                    var right = ParseUnary(tokenizer);
+                    var rightExpression = ParseUnary(tokenizer);
 
-                    return new UnaryExpression(right, a => -a);
+                    return new UnaryExpression(rightExpression, a => -a);
                 }
 
                 return ParseLeaf(tokenizer);
@@ -102,24 +102,24 @@ namespace I2M.MathExpression
         {
             if (tokenizer.CurrentToken.Type == TokenType.Number)
             {
-                var leaf = new NumberExpression(tokenizer.CurrentToken.Value);
+                var numberExpression = new NumberExpression(tokenizer.CurrentToken.Value);
 
                 tokenizer.NextToken();
 
-                return leaf;
+                return numberExpression;
             }
 
             if (tokenizer.CurrentToken.Type == TokenType.LeftBracket)
             {
                 tokenizer.NextToken();
 
-                var leaf = ParseHighPriority(tokenizer);
+                var bracketExpression = ParseHighPriority(tokenizer);
 
                 tokenizer.CurrentToken.EnsureRightBracketTokenType();
 
                 tokenizer.NextToken();
 
-                return leaf;
+                return bracketExpression;
             }
 
             throw new ExpressionParseException($"Unexpected token: {tokenizer.CurrentToken.Type}");
