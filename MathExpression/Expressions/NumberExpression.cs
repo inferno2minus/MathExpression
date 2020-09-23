@@ -12,5 +12,7 @@ namespace I2M.MathExpression.Expressions
         }
 
         public double Eval() => _number;
+
+        public override string ToString() => $"Number: {_number}";
     }
 }

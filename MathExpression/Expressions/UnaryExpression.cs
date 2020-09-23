@@ -15,5 +15,7 @@ namespace I2M.MathExpression.Expressions
         }
 
         public double Eval() => _operation(_right.Eval());
+
+        public override string ToString() => $"Right: {_right.Eval()}, Result: {_operation(_right.Eval())}";
     }
 }

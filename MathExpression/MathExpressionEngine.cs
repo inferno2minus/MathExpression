@@ -79,11 +79,8 @@ namespace I2M.MathExpression
             while (true)
             {
                 if (IsPositiveTokenType(tokenizer)) continue;
-
                 if (TryGetNegativeExpression(tokenizer, out var negativeExpression)) return negativeExpression;
-
                 if (TyeGetNumberExpression(tokenizer, out var numberExpression)) return numberExpression;
-
                 if (TryGetBracketExpression(tokenizer, out var bracketExpression)) return bracketExpression;
 
                 throw new ExpressionParseException($"Unexpected token: {tokenizer.CurrentToken.Type}");
