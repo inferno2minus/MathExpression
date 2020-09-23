@@ -78,51 +78,76 @@ namespace I2M.MathExpression
         {
             while (true)
             {
-                if (tokenizer.CurrentToken.Type == TokenType.Add)
-                {
-                    tokenizer.NextToken();
+                if (IsPositiveTokenType(tokenizer)) continue;
 
-                    continue;
-                }
+                if (TryGetNegativeExpression(tokenizer, out var negativeExpression)) return negativeExpression;
 
-                if (tokenizer.CurrentToken.Type == TokenType.Subtract)
-                {
-                    tokenizer.NextToken();
+                if (TyeGetNumberExpression(tokenizer, out var numberExpression)) return numberExpression;
 
-                    var rightExpression = ParseUnary(tokenizer);
+                if (TryGetBracketExpression(tokenizer, out var bracketExpression)) return bracketExpression;
 
-                    return new UnaryExpression(rightExpression, a => -a);
-                }
-
-                return ParseLeaf(tokenizer);
+                throw new ExpressionParseException($"Unexpected token: {tokenizer.CurrentToken.Type}");
             }
         }
 
-        private IExpression ParseLeaf(ITokenizer tokenizer)
+        private static bool IsPositiveTokenType(ITokenizer tokenizer)
         {
-            if (tokenizer.CurrentToken.Type == TokenType.Number)
+            if (tokenizer.CurrentToken.Type == TokenType.Add)
             {
-                var numberExpression = new NumberExpression(tokenizer.CurrentToken.Value);
-
                 tokenizer.NextToken();
 
-                return numberExpression;
+                return true;
             }
+
+            return false;
+        }
+
+        private bool TryGetNegativeExpression(ITokenizer tokenizer, out IExpression negativeExpression)
+        {
+            negativeExpression = null;
+
+            if (tokenizer.CurrentToken.Type == TokenType.Subtract)
+            {
+                tokenizer.NextToken();
+
+                var rightExpression = ParseUnary(tokenizer);
+
+                negativeExpression = new UnaryExpression(rightExpression, a => -a);
+            }
+
+            return negativeExpression != null;
+        }
+
+        private static bool TyeGetNumberExpression(ITokenizer tokenizer, out IExpression numberExpression)
+        {
+            numberExpression = null;
+
+            if (tokenizer.CurrentToken.Type == TokenType.Number)
+            {
+                numberExpression = new NumberExpression(tokenizer.CurrentToken.Value);
+
+                tokenizer.NextToken();
+            }
+
+            return numberExpression != null;
+        }
+
+        private bool TryGetBracketExpression(ITokenizer tokenizer, out IExpression bracketExpression)
+        {
+            bracketExpression = null;
 
             if (tokenizer.CurrentToken.Type == TokenType.LeftBracket)
             {
                 tokenizer.NextToken();
 
-                var bracketExpression = ParseLowPriority(tokenizer);
+                bracketExpression = ParseLowPriority(tokenizer);
 
                 tokenizer.CurrentToken.EnsureRightBracketTokenType();
 
                 tokenizer.NextToken();
-
-                return bracketExpression;
             }
 
-            throw new ExpressionParseException($"Unexpected token: {tokenizer.CurrentToken.Type}");
+            return bracketExpression != null;
         }
     }
 }
