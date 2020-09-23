@@ -27,16 +27,16 @@ namespace I2M.MathExpression
 
             tokenizer.Init();
 
-            var expression = ParseHighPriority(tokenizer);
+            var expression = ParseLowPriority(tokenizer);
 
             tokenizer.CurrentToken.EnsureEndOfFileTokenType();
 
             return expression;
         }
 
-        private IExpression ParseHighPriority(ITokenizer tokenizer)
+        private IExpression ParseLowPriority(ITokenizer tokenizer)
         {
-            var leftExpression = ParseLowPriority(tokenizer);
+            var leftExpression = ParseHighPriority(tokenizer);
 
             tokenizer.CurrentToken.EnsureNotUnknownTokenType();
 
@@ -48,13 +48,13 @@ namespace I2M.MathExpression
 
                 tokenizer.NextToken();
 
-                var rightExpression = ParseLowPriority(tokenizer);
+                var rightExpression = ParseHighPriority(tokenizer);
 
                 leftExpression = new BinaryExpression(leftExpression, rightExpression, operation);
             }
         }
 
-        private IExpression ParseLowPriority(ITokenizer tokenizer)
+        private IExpression ParseHighPriority(ITokenizer tokenizer)
         {
             var leftExpression = ParseUnary(tokenizer);
 
@@ -113,7 +113,7 @@ namespace I2M.MathExpression
             {
                 tokenizer.NextToken();
 
-                var bracketExpression = ParseHighPriority(tokenizer);
+                var bracketExpression = ParseLowPriority(tokenizer);
 
                 tokenizer.CurrentToken.EnsureRightBracketTokenType();
 
