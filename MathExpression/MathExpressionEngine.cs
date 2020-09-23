@@ -42,7 +42,7 @@ namespace I2M.MathExpression
 
             while (true)
             {
-                var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
+                var operation = OperationFactory.CreateLowPriorityOperation(tokenizer.CurrentToken.Type);
 
                 if (operation == null) return leftExpression;
 
@@ -62,7 +62,7 @@ namespace I2M.MathExpression
 
             while (true)
             {
-                var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
+                var operation = OperationFactory.CreateHighPriorityOperation(tokenizer.CurrentToken.Type);
 
                 if (operation == null) return leftExpression;
 

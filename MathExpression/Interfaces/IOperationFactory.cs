@@ -5,6 +5,7 @@ namespace I2M.MathExpression.Interfaces
 {
     public interface IOperationFactory
     {
-        Func<double, double, double> CreateOperation(TokenType type);
+        Func<double, double, double> CreateLowPriorityOperation(TokenType type);
+        Func<double, double, double> CreateHighPriorityOperation(TokenType type);
     }
 }
