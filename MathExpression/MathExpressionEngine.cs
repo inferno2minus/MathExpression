@@ -36,79 +36,90 @@ namespace I2M.MathExpression
 
         private IExpression ParseHighPriority(ITokenizer tokenizer)
         {
-            var leftExpression = ParseLowPriority(tokenizer);
+            var left = ParseLowPriority(tokenizer);
 
             tokenizer.CurrentToken.EnsureNotUnknownTokenType();
 
-            var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
+            while (true)
+            {
+                var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
 
-            if (operation == null) return leftExpression;
+                if (operation == null) return left;
 
-            tokenizer.NextToken();
+                tokenizer.NextToken();
 
-            var rightExpression = ParseLowPriority(tokenizer);
+                var right = ParseLowPriority(tokenizer);
 
-            return new BinaryExpression(leftExpression, rightExpression, operation);
+                left = new BinaryExpression(left, right, operation);
+            }
         }
 
         private IExpression ParseLowPriority(ITokenizer tokenizer)
         {
-            var leftExpression = ParseUnary(tokenizer);
+            var left = ParseUnary(tokenizer);
 
             tokenizer.CurrentToken.EnsureNotUnknownTokenType();
 
-            var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
+            while (true)
+            {
+                var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
 
-            if (operation == null) return leftExpression;
+                if (operation == null) return left;
 
-            tokenizer.NextToken();
+                tokenizer.NextToken();
 
-            var rightExpression = ParseUnary(tokenizer);
+                var right = ParseUnary(tokenizer);
 
-            return new BinaryExpression(leftExpression, rightExpression, operation);
+                left = new BinaryExpression(left, right, operation);
+            }
         }
 
         private IExpression ParseUnary(ITokenizer tokenizer)
         {
-            if (tokenizer.CurrentToken.Type == TokenType.Add)
+            while (true)
             {
-                tokenizer.NextToken();
+                if (tokenizer.CurrentToken.Type == TokenType.Add)
+                {
+                    tokenizer.NextToken();
+
+                    continue;
+                }
+
+                if (tokenizer.CurrentToken.Type == TokenType.Subtract)
+                {
+                    tokenizer.NextToken();
+
+                    var right = ParseUnary(tokenizer);
+
+                    return new UnaryExpression(right, a => -a);
+                }
+
+                return ParseLeaf(tokenizer);
             }
-
-            if (tokenizer.CurrentToken.Type == TokenType.Subtract)
-            {
-                tokenizer.NextToken();
-
-                var rightExpression = ParseUnary(tokenizer);
-
-                return new UnaryExpression(rightExpression, a => -a);
-            }
-
-            return ParseLeaf(tokenizer);
         }
 
         private IExpression ParseLeaf(ITokenizer tokenizer)
         {
             if (tokenizer.CurrentToken.Type == TokenType.Number)
             {
-                var numberExpression = new NumberExpression(tokenizer.CurrentToken.Value);
+                var leaf = new NumberExpression(tokenizer.CurrentToken.Value);
 
                 tokenizer.NextToken();
 
-                return numberExpression;
+                return leaf;
             }
 
             if (tokenizer.CurrentToken.Type == TokenType.LeftBracket)
             {
                 tokenizer.NextToken();
 
-                var bracketExpression = ParseHighPriority(tokenizer);
+                var leaf = ParseHighPriority(tokenizer);
 
                 tokenizer.CurrentToken.EnsureRightBracketTokenType();
 
                 tokenizer.NextToken();
 
-                return bracketExpression;
+                return leaf;
             }
 
             throw new ExpressionParseException($"Unexpected token: {tokenizer.CurrentToken.Type}");
