@@ -40,15 +40,18 @@ namespace I2M.MathExpression
 
             tokenizer.CurrentToken.EnsureNotUnknownTokenType();
 
-            var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
+            while (true)
+            {
+                var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
 
-            if (operation == null) return leftExpression;
+                if (operation == null) return leftExpression;
 
-            tokenizer.NextToken();
+                tokenizer.NextToken();
 
-            var rightExpression = ParseLowPriority(tokenizer);
+                var rightExpression = ParseLowPriority(tokenizer);
 
-            return new BinaryExpression(leftExpression, rightExpression, operation);
+                leftExpression = new BinaryExpression(leftExpression, rightExpression, operation);
+            }
         }
 
         private IExpression ParseLowPriority(ITokenizer tokenizer)
@@ -57,34 +60,42 @@ namespace I2M.MathExpression
 
             tokenizer.CurrentToken.EnsureNotUnknownTokenType();
 
-            var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
-
-            if (operation == null) return leftExpression;
-
-            tokenizer.NextToken();
-
-            var rightExpression = ParseUnary(tokenizer);
-
-            return new BinaryExpression(leftExpression, rightExpression, operation);
-        }
-
-        private IExpression ParseUnary(ITokenizer tokenizer)
-        {
-            if (tokenizer.CurrentToken.Type == TokenType.Add)
+            while (true)
             {
-                tokenizer.NextToken();
-            }
+                var operation = OperationFactory.CreateOperation(tokenizer.CurrentToken.Type);
 
-            if (tokenizer.CurrentToken.Type == TokenType.Subtract)
-            {
+                if (operation == null) return leftExpression;
+
                 tokenizer.NextToken();
 
                 var rightExpression = ParseUnary(tokenizer);
 
-                return new UnaryExpression(rightExpression, a => -a);
+                leftExpression = new BinaryExpression(leftExpression, rightExpression, operation);
             }
+        }
 
-            return ParseLeaf(tokenizer);
+        private IExpression ParseUnary(ITokenizer tokenizer)
+        {
+            while (true)
+            {
+                if (tokenizer.CurrentToken.Type == TokenType.Add)
+                {
+                    tokenizer.NextToken();
+
+                    continue;
+                }
+
+                if (tokenizer.CurrentToken.Type == TokenType.Subtract)
+                {
+                    tokenizer.NextToken();
+
+                    var rightExpression = ParseUnary(tokenizer);
+
+                    return new UnaryExpression(rightExpression, a => -a);
+                }
+
+                return ParseLeaf(tokenizer);
+            }
         }
 
         private IExpression ParseLeaf(ITokenizer tokenizer)
