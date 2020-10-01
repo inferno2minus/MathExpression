@@ -2,7 +2,13 @@
 {
     public class Token
     {
-        public TokenType Type { get; set; }
-        public double Value { get; set; }
+        public TokenType Type { get; }
+        public double Value { get; }
+
+        public Token(TokenType type, double value = 0)
+        {
+            Type = type;
+            Value = value;
+        }
     }
 }
