@@ -16,6 +16,7 @@ namespace I2M.MathExpression.Tests
         [InlineData("10 * 20", 200)]
         [InlineData("10 / 20", 0.5)]
         [InlineData("1 + 1 * 10", 11)]
+        [InlineData(".5 + .5", 1)]
         [InlineData("10.5 + 10.5", 21)]
         [InlineData("10 * 20 / 2", 100)]
         [InlineData("10 - 20 * 2", -30)]
