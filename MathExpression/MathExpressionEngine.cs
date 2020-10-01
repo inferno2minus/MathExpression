@@ -10,7 +10,7 @@ namespace I2M.MathExpression
 {
     public class MathExpressionEngine : IMathExpressionEngine
     {
-        private IOperationFactory OperationFactory { get; } = new DefaultOperationFactory();
+        private readonly IOperationFactory _operationFactory = new DefaultOperationFactory();
 
         public MathExpressionEngine()
         {
@@ -18,7 +18,7 @@ namespace I2M.MathExpression
 
         public MathExpressionEngine(IOperationFactory operationFactory)
         {
-            OperationFactory = operationFactory;
+            _operationFactory = operationFactory;
         }
 
         public IExpression ParseExpression(ITokenizer tokenizer)
@@ -42,7 +42,7 @@ namespace I2M.MathExpression
 
             while (true)
             {
-                var operation = OperationFactory.CreateLowPriorityOperation(tokenizer.CurrentToken.Type);
+                var operation = _operationFactory.CreateLowPriorityOperation(tokenizer.CurrentToken.Type);
 
                 if (operation == null) return leftExpression;
 
@@ -62,7 +62,7 @@ namespace I2M.MathExpression
 
             while (true)
             {
-                var operation = OperationFactory.CreateHighPriorityOperation(tokenizer.CurrentToken.Type);
+                var operation = _operationFactory.CreateHighPriorityOperation(tokenizer.CurrentToken.Type);
 
                 if (operation == null) return leftExpression;
 
