@@ -59,18 +59,7 @@ namespace I2M.MathExpression.Tokenizers
 
             if (char.IsDigit(CurrentChar) || CurrentChar.IsDecimalPoint())
             {
-                var stringBuilder = new StringBuilder();
-
-                var haveDecimalPoint = false;
-
-                while (char.IsDigit(CurrentChar) || !haveDecimalPoint && CurrentChar.IsDecimalPoint())
-                {
-                    stringBuilder.Append(CurrentChar);
-                    haveDecimalPoint = CurrentChar.IsDecimalPoint();
-                    NextCharCore();
-                }
-
-                CurrentToken.Value = double.Parse(stringBuilder.ToString(), CultureInfo.InvariantCulture);
+                CurrentToken.Value = double.Parse(GetStringNumber(), CultureInfo.InvariantCulture);
                 CurrentToken.Type = TokenType.Number;
             }
         }
@@ -80,6 +69,22 @@ namespace I2M.MathExpression.Tokenizers
             var currentChar = _reader.Read();
 
             CurrentChar = currentChar < 0 ? Eof : (char)currentChar;
+        }
+
+        private string GetStringNumber()
+        {
+            var stringBuilder = new StringBuilder();
+
+            var haveDecimalPoint = false;
+
+            while (char.IsDigit(CurrentChar) || !haveDecimalPoint && CurrentChar.IsDecimalPoint())
+            {
+                stringBuilder.Append(CurrentChar);
+                haveDecimalPoint = CurrentChar.IsDecimalPoint();
+                NextCharCore();
+            }
+
+            return stringBuilder.ToString();
         }
     }
 }
