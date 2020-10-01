@@ -24,44 +24,44 @@ namespace I2M.MathExpression.Tokenizers
 
         protected override void NextTokenCore()
         {
-            CurrentToken.Type = TokenType.Unknown;
-
             switch (CurrentChar)
             {
                 case Eof:
-                    CurrentToken.Type = TokenType.Eof;
+                    CurrentToken = new Token(TokenType.Eof);
                     return;
                 case Add:
                     NextCharCore();
-                    CurrentToken.Type = TokenType.Add;
+                    CurrentToken = new Token(TokenType.Add);
                     return;
                 case Subtract:
                     NextCharCore();
-                    CurrentToken.Type = TokenType.Subtract;
+                    CurrentToken = new Token(TokenType.Subtract);
                     return;
                 case Multiply:
                     NextCharCore();
-                    CurrentToken.Type = TokenType.Multiply;
+                    CurrentToken = new Token(TokenType.Multiply);
                     return;
                 case Divide:
                     NextCharCore();
-                    CurrentToken.Type = TokenType.Divide;
+                    CurrentToken = new Token(TokenType.Divide);
                     return;
                 case LeftBracket:
                     NextCharCore();
-                    CurrentToken.Type = TokenType.LeftBracket;
+                    CurrentToken = new Token(TokenType.LeftBracket);
                     return;
                 case RightBracket:
                     NextCharCore();
-                    CurrentToken.Type = TokenType.RightBracket;
+                    CurrentToken = new Token(TokenType.RightBracket);
                     return;
             }
 
             if (char.IsDigit(CurrentChar) || CurrentChar.IsDecimalPoint())
             {
-                CurrentToken.Value = double.Parse(GetStringNumber(), CultureInfo.InvariantCulture);
-                CurrentToken.Type = TokenType.Number;
+                CurrentToken = new Token(TokenType.Number, double.Parse(GetStringNumber(), CultureInfo.InvariantCulture));
+                return;
             }
+
+            CurrentToken = new Token(TokenType.Unknown);
         }
 
         protected override void NextCharCore()

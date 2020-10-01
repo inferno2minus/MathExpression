@@ -4,8 +4,7 @@ namespace I2M.MathExpression.Tokenizers
 {
     public abstract class BaseTokenizer : ITokenizer
     {
-        public Token CurrentToken { get; } = new Token();
-
+        public Token CurrentToken { get; protected set; }
         protected char CurrentChar { get; set; }
 
         public void NextToken()
@@ -25,7 +24,6 @@ namespace I2M.MathExpression.Tokenizers
         }
 
         protected abstract void NextTokenCore();
-
         protected abstract void NextCharCore();
     }
 }
