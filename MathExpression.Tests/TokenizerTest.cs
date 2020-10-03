@@ -7,7 +7,6 @@ namespace I2M.MathExpression.Tests
 {
     public class TokenizerTest
     {
-
         [Fact]
         public void NextToken_SymbolsString_ReturnsExpectedSymbol()
         {
