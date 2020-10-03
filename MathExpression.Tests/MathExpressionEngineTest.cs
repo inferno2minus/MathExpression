@@ -12,7 +12,7 @@ namespace I2M.MathExpression.Tests
         public void ParseExpression_ExpressionString_ReturnsExpectedEval()
         {
             // Arrange
-            const string expressionString = "-((10 + 20) - (5 + 5) / 2 * 2)";
+            const string expressionString = "-((10 + 20) - 5 * 5 + 2 * 2)";
 
             using var reader = new StringReader(expressionString);
 
@@ -26,7 +26,7 @@ namespace I2M.MathExpression.Tests
             var result = engine.ParseExpression(tokenizer).Eval();
 
             // Assert
-            result.Should().Be(-20);
+            result.Should().Be(-9);
         }
     }
 }
