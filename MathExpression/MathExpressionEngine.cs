@@ -2,19 +2,13 @@
 using I2M.MathExpression.Expressions;
 using I2M.MathExpression.Extensions;
 using I2M.MathExpression.Interfaces;
-using I2M.MathExpression.Operations;
-using I2M.MathExpression.Tokenizers;
 using System;
 
 namespace I2M.MathExpression
 {
     public class MathExpressionEngine : IMathExpressionEngine
     {
-        private readonly IOperationFactory _operationFactory = new DefaultOperationFactory();
-
-        public MathExpressionEngine()
-        {
-        }
+        private readonly IOperationFactory _operationFactory;
 
         public MathExpressionEngine(IOperationFactory operationFactory)
         {
@@ -29,7 +23,7 @@ namespace I2M.MathExpression
 
             var expression = ParseLowPriority(tokenizer);
 
-            tokenizer.CurrentToken.EnsureEndOfFileTokenType();
+            tokenizer.CurrentToken.EnsureEndOfFileSymbol();
 
             return expression;
         }
@@ -38,11 +32,9 @@ namespace I2M.MathExpression
         {
             var leftExpression = ParseHighPriority(tokenizer);
 
-            tokenizer.CurrentToken.EnsureNotUnknownTokenType();
-
             while (true)
             {
-                var operation = _operationFactory.CreateLowPriorityOperation(tokenizer.CurrentToken.Type);
+                var operation = _operationFactory.CreateLowPriorityOperation(tokenizer.CurrentToken.Symbol);
 
                 if (operation == null) return leftExpression;
 
@@ -58,11 +50,9 @@ namespace I2M.MathExpression
         {
             var leftExpression = ParseUnary(tokenizer);
 
-            tokenizer.CurrentToken.EnsureNotUnknownTokenType();
-
             while (true)
             {
-                var operation = _operationFactory.CreateHighPriorityOperation(tokenizer.CurrentToken.Type);
+                var operation = _operationFactory.CreateHighPriorityOperation(tokenizer.CurrentToken.Symbol);
 
                 if (operation == null) return leftExpression;
 
@@ -83,13 +73,13 @@ namespace I2M.MathExpression
                 if (TyeGetNumberExpression(tokenizer, out var numberExpression)) return numberExpression;
                 if (TryGetBracketExpression(tokenizer, out var bracketExpression)) return bracketExpression;
 
-                throw new ExpressionParseException($"Unexpected token: {tokenizer.CurrentToken.Type}");
+                throw new ExpressionParseException($"Unexpected symbol: {tokenizer.CurrentToken.Symbol}");
             }
         }
 
         private static bool IsPositiveTokenType(ITokenizer tokenizer)
         {
-            if (tokenizer.CurrentToken.Type == TokenType.Add)
+            if (tokenizer.CurrentToken.IsAddSymbol())
             {
                 tokenizer.NextToken();
 
@@ -103,7 +93,7 @@ namespace I2M.MathExpression
         {
             negativeExpression = null;
 
-            if (tokenizer.CurrentToken.Type == TokenType.Subtract)
+            if (tokenizer.CurrentToken.IsSubtractSymbol())
             {
                 tokenizer.NextToken();
 
@@ -119,7 +109,7 @@ namespace I2M.MathExpression
         {
             numberExpression = null;
 
-            if (tokenizer.CurrentToken.Type == TokenType.Number)
+            if (tokenizer.CurrentToken.Symbol.IsDigit() || tokenizer.CurrentToken.Symbol.IsDecimalPoint())
             {
                 numberExpression = new NumberExpression(tokenizer.CurrentToken.Value);
 
@@ -133,13 +123,13 @@ namespace I2M.MathExpression
         {
             bracketExpression = null;
 
-            if (tokenizer.CurrentToken.Type == TokenType.LeftBracket)
+            if (tokenizer.CurrentToken.IsLeftBracketSymbol())
             {
                 tokenizer.NextToken();
 
                 bracketExpression = ParseLowPriority(tokenizer);
 
-                tokenizer.CurrentToken.EnsureRightBracketTokenType();
+                tokenizer.CurrentToken.EnsureRightBracketSymbol();
 
                 tokenizer.NextToken();
             }
