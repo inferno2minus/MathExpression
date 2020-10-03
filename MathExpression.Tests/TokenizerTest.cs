@@ -8,6 +8,23 @@ namespace I2M.MathExpression.Tests
     public class TokenizerTest
     {
         [Fact]
+        public void Init_SymbolsString_ReturnsExpectedSymbol()
+        {
+            // Arrange
+            const string symbolsString = "- +";
+
+            using var reader = new StringReader(symbolsString);
+            var tokenizer = new Tokenizer(reader);
+
+            // Act
+            tokenizer.Init();
+
+            // Assert
+            tokenizer.CurrentToken.Symbol.Should().NotBe('+');
+            tokenizer.CurrentToken.Symbol.Should().Be('-');
+        }
+
+        [Fact]
         public void NextToken_SymbolsString_ReturnsExpectedSymbol()
         {
             // Arrange
