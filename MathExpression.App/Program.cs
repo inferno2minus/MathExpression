@@ -1,6 +1,8 @@
 ﻿using I2M.MathExpression.Exceptions;
-using I2M.MathExpression.Helpers;
+using I2M.MathExpression.Operations;
+using I2M.MathExpression.Tokenizers;
 using System;
+using System.IO;
 
 namespace I2M.MathExpression.App
 {
@@ -14,14 +16,18 @@ namespace I2M.MathExpression.App
 
                 var expression = Console.ReadLine();
 
-                if (expression != null && expression.Equals("exit", StringComparison.OrdinalIgnoreCase))
-                {
-                    break;
-                }
+                if (expression == null) continue;
+
+                if (expression.Equals("exit", StringComparison.OrdinalIgnoreCase)) break;
 
                 try
                 {
-                    var result = MathExpressionHelper.Parse(expression).Eval();
+                    using var reader = new StringReader(expression);
+                    var tokenizer = new Tokenizer(reader);
+                    var operationFactory = new OperationFactory();
+                    var engine = new MathExpressionEngine(operationFactory);
+
+                    var result = engine.ParseExpression(tokenizer).Eval();
 
                     Console.WriteLine($"Your result: {result}");
                 }
