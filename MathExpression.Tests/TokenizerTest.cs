@@ -7,6 +7,22 @@ namespace I2M.MathExpression.Tests
 {
     public class TokenizerTest
     {
+        [Fact]
+        public void Init_SymbolsString_ReturnsExpectedSymbol()
+        {
+            // Arrange
+            const string symbolsString = "- +";
+
+            using var reader = new StringReader(symbolsString);
+            var tokenizer = new Tokenizer(reader);
+
+            // Act
+            tokenizer.Init();
+
+            // Assert
+            tokenizer.CurrentToken.Symbol.Should().NotBe('+');
+            tokenizer.CurrentToken.Symbol.Should().Be('-');
+        }
 
         [Fact]
         public void NextToken_SymbolsString_ReturnsExpectedSymbol()
@@ -19,10 +35,10 @@ namespace I2M.MathExpression.Tests
 
             // Act
             tokenizer.Init();
+            tokenizer.NextToken();
 
             // Assert
-            tokenizer.CurrentToken.Symbol.Should().Be('-');
-            tokenizer.NextToken();
+            tokenizer.CurrentToken.Symbol.Should().NotBe('-');
             tokenizer.CurrentToken.Symbol.Should().Be('+');
         }
 
@@ -37,10 +53,10 @@ namespace I2M.MathExpression.Tests
 
             // Act
             tokenizer.Init();
+            tokenizer.NextToken();
 
             // Assert
-            tokenizer.CurrentToken.Value.Should().Be(10);
-            tokenizer.NextToken();
+            tokenizer.CurrentToken.Value.Should().NotBe(10);
             tokenizer.CurrentToken.Value.Should().Be(20);
         }
 
@@ -55,10 +71,10 @@ namespace I2M.MathExpression.Tests
 
             // Act
             tokenizer.Init();
+            tokenizer.NextToken();
 
             // Assert
-            tokenizer.CurrentToken.Value.Should().Be(10.5);
-            tokenizer.NextToken();
+            tokenizer.CurrentToken.Value.Should().NotBe(10.5);
             tokenizer.CurrentToken.Value.Should().Be(0.5);
         }
     }
