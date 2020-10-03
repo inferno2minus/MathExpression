@@ -15,11 +15,8 @@ namespace I2M.MathExpression.Tests
             const string expressionString = "-((10 + 20) - 5 * 5 + 2 * 2)";
 
             using var reader = new StringReader(expressionString);
-
             var tokenizer = new Tokenizer(reader);
-
             var operationFactory = new OperationFactory();
-
             var engine = new MathExpressionEngine(operationFactory);
 
             // Act
