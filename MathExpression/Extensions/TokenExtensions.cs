@@ -1,32 +1,40 @@
 ﻿using I2M.MathExpression.Exceptions;
+using I2M.MathExpression.infrastructure;
 using I2M.MathExpression.Tokenizers;
 
 namespace I2M.MathExpression.Extensions
 {
     public static class TokenExtensions
     {
-        public static void EnsureEndOfFileTokenType(this Token value)
+        public static void EnsureEndOfFileSymbol(this Token value)
         {
-            if (value?.Type != TokenType.Eof)
+            if (value?.Symbol != Symbols.Eof)
             {
                 throw new ExpressionParseException("Unexpected characters at end of expression");
             }
         }
 
-        public static void EnsureRightBracketTokenType(this Token value)
+        public static void EnsureRightBracketSymbol(this Token value)
         {
-            if (value?.Type != TokenType.RightBracket)
+            if (value?.Symbol != Symbols.RightBracket)
             {
                 throw new ExpressionParseException("Missing closing bracket");
             }
         }
 
-        public static void EnsureNotUnknownTokenType(this Token value)
+        public static bool IsAddSymbol(this Token value)
         {
-            if (value?.Type == TokenType.Unknown)
-            {
-                throw new ExpressionParseException($"Unexpected token: {value.Type}");
-            }
+            return value?.Symbol == Symbols.Add;
+        }
+
+        public static bool IsSubtractSymbol(this Token value)
+        {
+            return value?.Symbol == Symbols.Subtract;
+        }
+
+        public static bool IsLeftBracketSymbol(this Token value)
+        {
+            return value?.Symbol == Symbols.LeftBracket;
         }
     }
 }

@@ -2,12 +2,12 @@
 {
     public class Token
     {
-        public TokenType Type { get; }
+        public char Symbol { get; }
         public double Value { get; }
 
-        public Token(TokenType type, double value = 0)
+        public Token(char symbol, double value = 0)
         {
-            Type = type;
+            Symbol = symbol;
             Value = value;
         }
     }

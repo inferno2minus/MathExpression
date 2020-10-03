@@ -1,17 +1,18 @@
-﻿using I2M.MathExpression.Interfaces;
+﻿using I2M.MathExpression.Extensions;
+using I2M.MathExpression.Interfaces;
 
 namespace I2M.MathExpression.Tokenizers
 {
     public abstract class BaseTokenizer : ITokenizer
     {
         public Token CurrentToken { get; protected set; }
-        protected char CurrentChar { get; set; }
+        protected char CurrentSymbol { get; set; }
 
         public void NextToken()
         {
-            while (char.IsWhiteSpace(CurrentChar))
+            while (CurrentSymbol.IsWhiteSpace())
             {
-                NextCharCore();
+                NextSymbolCore();
             }
 
             NextTokenCore();
@@ -19,11 +20,11 @@ namespace I2M.MathExpression.Tokenizers
 
         public void Init()
         {
-            NextCharCore();
+            NextSymbolCore();
             NextTokenCore();
         }
 
         protected abstract void NextTokenCore();
-        protected abstract void NextCharCore();
+        protected abstract void NextSymbolCore();
     }
 }
