@@ -15,7 +15,6 @@ namespace I2M.MathExpression.Tests
             const string symbolsString = "- +";
 
             using var reader = new StringReader(symbolsString);
-
             var tokenizer = new Tokenizer(reader);
 
             // Act
@@ -34,7 +33,6 @@ namespace I2M.MathExpression.Tests
             const string integerNumbersString = "10 20";
 
             using var reader = new StringReader(integerNumbersString);
-
             var tokenizer = new Tokenizer(reader);
 
             // Act
@@ -53,7 +51,6 @@ namespace I2M.MathExpression.Tests
             const string doubleNumbersString = "10.5 .5";
 
             using var reader = new StringReader(doubleNumbersString);
-
             var tokenizer = new Tokenizer(reader);
 
             // Act
