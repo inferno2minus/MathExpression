@@ -1,5 +1,5 @@
 ﻿using I2M.MathExpression.Exceptions;
-using I2M.MathExpression.infrastructure;
+using I2M.MathExpression.Infrastructure;
 using I2M.MathExpression.Tokenizers;
 using System.Linq;
 

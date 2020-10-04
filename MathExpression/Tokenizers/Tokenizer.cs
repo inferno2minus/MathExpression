@@ -1,5 +1,5 @@
 ﻿using I2M.MathExpression.Extensions;
-using I2M.MathExpression.infrastructure;
+using I2M.MathExpression.Infrastructure;
 using System.Globalization;
 using System.IO;
 using System.Text;

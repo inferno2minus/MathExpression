@@ -1,4 +1,4 @@
-﻿namespace I2M.MathExpression.infrastructure
+﻿namespace I2M.MathExpression.Infrastructure
 {
     public static class Symbols
     {
