@@ -2,14 +2,9 @@
 {
     public static class CharExtensions
     {
-        public static bool IsDecimalPoint(this char value)
+        public static bool IsDigitOrDecimalPoint(this char value)
         {
-            return value == '.';
-        }
-
-        public static bool IsDigit(this char value)
-        {
-            return char.IsDigit(value);
+            return char.IsDigit(value) || value == '.';
         }
 
         public static bool IsWhiteSpace(this char value)
