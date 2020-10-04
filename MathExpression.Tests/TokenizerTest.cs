@@ -24,7 +24,7 @@ namespace I2M.MathExpression.Tests
         }
 
         [Fact]
-        public void Init_IntegerNumberString_ReturnsExpectedValue()
+        public void Init_IntegerNumberString_ReturnsExpectedNumber()
         {
             // Arrange
             const string integerNumberString = "10";
@@ -36,11 +36,11 @@ namespace I2M.MathExpression.Tests
             tokenizer.Init();
 
             // Assert
-            tokenizer.CurrentToken.Value.Should().Be(10);
+            tokenizer.CurrentToken.Number.Should().Be(10);
         }
 
         [Fact]
-        public void Init_DoubleNumberString_ReturnsExpectedValue()
+        public void Init_DoubleNumberString_ReturnsExpectedNumber()
         {
             // Arrange
             const string doubleNumbersString = "10.5";
@@ -52,7 +52,7 @@ namespace I2M.MathExpression.Tests
             tokenizer.Init();
 
             // Assert
-            tokenizer.CurrentToken.Value.Should().Be(10.5);
+            tokenizer.CurrentToken.Number.Should().Be(10.5);
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace I2M.MathExpression.Tests
         }
 
         [Fact]
-        public void NextToken_IntegerNumbersString_ReturnsExpectedValue()
+        public void NextToken_IntegerNumbersString_ReturnsExpectedNumber()
         {
             // Arrange
             const string integerNumbersString = "10 20";
@@ -86,11 +86,11 @@ namespace I2M.MathExpression.Tests
             tokenizer.NextToken();
 
             // Assert
-            tokenizer.CurrentToken.Value.Should().Be(20);
+            tokenizer.CurrentToken.Number.Should().Be(20);
         }
 
         [Fact]
-        public void NextToken_DoubleNumbersString_ReturnsExpectedValue()
+        public void NextToken_DoubleNumbersString_ReturnsExpectedNumber()
         {
             // Arrange
             const string doubleNumbersString = "10.5 .5";
@@ -103,7 +103,7 @@ namespace I2M.MathExpression.Tests
             tokenizer.NextToken();
 
             // Assert
-            tokenizer.CurrentToken.Value.Should().Be(0.5);
+            tokenizer.CurrentToken.Number.Should().Be(0.5);
         }
     }
 }

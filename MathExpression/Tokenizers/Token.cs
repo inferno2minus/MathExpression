@@ -3,12 +3,12 @@
     public class Token
     {
         public char Symbol { get; }
-        public double Value { get; }
+        public double? Number { get; }
 
-        public Token(char symbol, double value = 0)
+        public Token(char symbol, double? number = null)
         {
             Symbol = symbol;
-            Value = value;
+            Number = number;
         }
     }
 }
