@@ -10,7 +10,7 @@ namespace I2M.MathExpression.Extensions
         {
             if (value?.Symbol != Symbols.Eof)
             {
-                throw new ExpressionParseException("Unexpected characters at end of expression");
+                throw new ExpressionParseException("Unexpected symbol in expression");
             }
         }
 
