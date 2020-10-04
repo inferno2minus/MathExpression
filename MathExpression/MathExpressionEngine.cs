@@ -109,9 +109,9 @@ namespace I2M.MathExpression
         {
             numberExpression = null;
 
-            if (tokenizer.CurrentToken.Symbol.IsDigitOrDecimalPoint())
+            if (tokenizer.CurrentToken.Number.HasValue)
             {
-                numberExpression = new NumberExpression(tokenizer.CurrentToken.Value);
+                numberExpression = new NumberExpression(tokenizer.CurrentToken.Number.Value);
 
                 tokenizer.NextToken();
             }

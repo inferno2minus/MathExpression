@@ -21,9 +21,9 @@ namespace I2M.MathExpression.Tokenizers
 
             if (CurrentSymbol.IsDigitOrDecimalPoint())
             {
-                var value = double.Parse(GetNumberString(), CultureInfo.InvariantCulture);
+                var number = double.Parse(GetNumberString(), CultureInfo.InvariantCulture);
 
-                CurrentToken = new Token(symbol, value);
+                CurrentToken = new Token(symbol, number);
 
                 return;
             }
