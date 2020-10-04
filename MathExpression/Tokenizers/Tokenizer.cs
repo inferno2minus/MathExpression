@@ -19,9 +19,9 @@ namespace I2M.MathExpression.Tokenizers
         {
             var symbol = CurrentSymbol;
 
-            if (CurrentSymbol.IsDigit() || CurrentSymbol.IsDecimalPoint())
+            if (CurrentSymbol.IsDigitOrDecimalPoint())
             {
-                var value = double.Parse(GetStringNumber(), CultureInfo.InvariantCulture);
+                var value = double.Parse(GetNumberString(), CultureInfo.InvariantCulture);
 
                 CurrentToken = new Token(symbol, value);
 
@@ -40,17 +40,13 @@ namespace I2M.MathExpression.Tokenizers
             CurrentSymbol = symbol < 0 ? Symbols.Eof : (char)symbol;
         }
 
-        private string GetStringNumber()
+        private string GetNumberString()
         {
             var stringBuilder = new StringBuilder();
 
-            var haveDecimalPoint = false;
-
-            while (CurrentSymbol.IsDigit() || CurrentSymbol.IsDecimalPoint() && !haveDecimalPoint)
+            while (CurrentSymbol.IsDigitOrDecimalPoint())
             {
                 stringBuilder.Append(CurrentSymbol);
-
-                haveDecimalPoint = CurrentSymbol.IsDecimalPoint();
 
                 NextSymbolCore();
             }

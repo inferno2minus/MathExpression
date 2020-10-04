@@ -10,12 +10,12 @@ namespace I2M.MathExpression.Tests
         public void CreateHighPriorityOperation_DivideSymbol_ReturnsExpectedOperation()
         {
             // Arrange
-            const char symbol = '/';
+            const char divideSymbol = '/';
 
             var operationFactory = new OperationFactory();
 
             // Act
-            var operation = operationFactory.CreateHighPriorityOperation(symbol);
+            var operation = operationFactory.CreateHighPriorityOperation(divideSymbol);
 
             // Assert
             operation.Should().NotBeNull();
@@ -26,12 +26,12 @@ namespace I2M.MathExpression.Tests
         public void CreateHighPriorityOperation_MultiplySymbol_ReturnsExpectedOperation()
         {
             // Arrange
-            const char symbol = '*';
+            const char multiplySymbol = '*';
 
             var operationFactory = new OperationFactory();
 
             // Act
-            var operation = operationFactory.CreateHighPriorityOperation(symbol);
+            var operation = operationFactory.CreateHighPriorityOperation(multiplySymbol);
 
             // Assert
             operation.Should().NotBeNull();
@@ -42,12 +42,12 @@ namespace I2M.MathExpression.Tests
         public void CreateLowPriorityOperation_AddSymbol_ReturnsExpectedOperation()
         {
             // Arrange
-            const char symbol = '+';
+            const char addSymbol = '+';
 
             var operationFactory = new OperationFactory();
 
             // Act
-            var operation = operationFactory.CreateLowPriorityOperation(symbol);
+            var operation = operationFactory.CreateLowPriorityOperation(addSymbol);
 
             // Assert
             operation.Should().NotBeNull();
@@ -58,12 +58,12 @@ namespace I2M.MathExpression.Tests
         public void CreateLowPriorityOperation_SubtractSymbol_ReturnsExpectedOperation()
         {
             // Arrange
-            const char symbol = '-';
+            const char subtractSymbol = '-';
 
             var operationFactory = new OperationFactory();
 
             // Act
-            var operation = operationFactory.CreateLowPriorityOperation(symbol);
+            var operation = operationFactory.CreateLowPriorityOperation(subtractSymbol);
 
             // Assert
             operation.Should().NotBeNull();
