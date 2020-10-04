@@ -1,13 +1,15 @@
-﻿namespace I2M.MathExpression.Tokenizers
+﻿using System.Collections.Generic;
+
+namespace I2M.MathExpression.Tokenizers
 {
     public class Token
     {
-        public char Symbol { get; }
+        public IEnumerable<char> Symbols { get; }
         public double? Number { get; }
 
-        public Token(char symbol, double? number = null)
+        public Token(IEnumerable<char> symbols, double? number = null)
         {
-            Symbol = symbol;
+            Symbols = symbols;
             Number = number;
         }
     }

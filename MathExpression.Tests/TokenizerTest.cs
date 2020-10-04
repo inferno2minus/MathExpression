@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using I2M.MathExpression.Tokenizers;
 using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace I2M.MathExpression.Tests
@@ -20,7 +21,7 @@ namespace I2M.MathExpression.Tests
             tokenizer.Init();
 
             // Assert
-            tokenizer.CurrentToken.Symbol.Should().Be('-');
+            tokenizer.CurrentToken.Symbols.First().Should().Be('-');
         }
 
         [Fact]
@@ -69,7 +70,7 @@ namespace I2M.MathExpression.Tests
             tokenizer.NextToken();
 
             // Assert
-            tokenizer.CurrentToken.Symbol.Should().Be('+');
+            tokenizer.CurrentToken.Symbols.First().Should().Be('+');
         }
 
         [Fact]

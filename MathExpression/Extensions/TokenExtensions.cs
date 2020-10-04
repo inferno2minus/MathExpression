@@ -1,6 +1,7 @@
 ﻿using I2M.MathExpression.Exceptions;
 using I2M.MathExpression.infrastructure;
 using I2M.MathExpression.Tokenizers;
+using System.Linq;
 
 namespace I2M.MathExpression.Extensions
 {
@@ -8,7 +9,7 @@ namespace I2M.MathExpression.Extensions
     {
         public static void EnsureEndOfFileSymbol(this Token value)
         {
-            if (value?.Symbol != Symbols.Eof)
+            if (value?.Symbols.First() != Symbols.Eof)
             {
                 throw new ExpressionParseException("Unexpected symbol in expression");
             }
@@ -16,7 +17,7 @@ namespace I2M.MathExpression.Extensions
 
         public static void EnsureRightBracketSymbol(this Token value)
         {
-            if (value?.Symbol != Symbols.RightBracket)
+            if (value?.Symbols.First() != Symbols.RightBracket)
             {
                 throw new ExpressionParseException("Missing closing bracket");
             }
@@ -24,17 +25,17 @@ namespace I2M.MathExpression.Extensions
 
         public static bool IsAddSymbol(this Token value)
         {
-            return value?.Symbol == Symbols.Add;
+            return value?.Symbols.First() == Symbols.Add;
         }
 
         public static bool IsSubtractSymbol(this Token value)
         {
-            return value?.Symbol == Symbols.Subtract;
+            return value?.Symbols.First() == Symbols.Subtract;
         }
 
         public static bool IsLeftBracketSymbol(this Token value)
         {
-            return value?.Symbol == Symbols.LeftBracket;
+            return value?.Symbols.First() == Symbols.LeftBracket;
         }
     }
 }

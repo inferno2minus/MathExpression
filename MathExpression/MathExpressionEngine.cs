@@ -3,6 +3,7 @@ using I2M.MathExpression.Expressions;
 using I2M.MathExpression.Extensions;
 using I2M.MathExpression.Interfaces;
 using System;
+using System.Linq;
 
 namespace I2M.MathExpression
 {
@@ -34,7 +35,7 @@ namespace I2M.MathExpression
 
             while (true)
             {
-                var operation = _operationFactory.CreateLowPriorityOperation(tokenizer.CurrentToken.Symbol);
+                var operation = _operationFactory.CreateLowPriorityOperation(tokenizer.CurrentToken.Symbols.First());
 
                 if (operation == null) return leftExpression;
 
@@ -52,7 +53,7 @@ namespace I2M.MathExpression
 
             while (true)
             {
-                var operation = _operationFactory.CreateHighPriorityOperation(tokenizer.CurrentToken.Symbol);
+                var operation = _operationFactory.CreateHighPriorityOperation(tokenizer.CurrentToken.Symbols.First());
 
                 if (operation == null) return leftExpression;
 
@@ -73,7 +74,7 @@ namespace I2M.MathExpression
                 if (TyeGetNumberExpression(tokenizer, out var numberExpression)) return numberExpression;
                 if (TryGetBracketExpression(tokenizer, out var bracketExpression)) return bracketExpression;
 
-                throw new ExpressionParseException($"Unexpected symbol: {tokenizer.CurrentToken.Symbol}");
+                throw new ExpressionParseException($"Unexpected symbol: {tokenizer.CurrentToken.Symbols.First()}");
             }
         }
 
