@@ -17,20 +17,20 @@ namespace I2M.MathExpression.Tokenizers
 
         protected override void NextTokenCore()
         {
-            var symbol = CurrentSymbol;
-
             if (CurrentSymbol.IsDigitOrDecimalPoint())
             {
-                var number = double.Parse(GetNumberString(), CultureInfo.InvariantCulture);
+                var numberString = GetNumberString();
 
-                CurrentToken = new Token(symbol, number);
+                var number = double.Parse(numberString, CultureInfo.InvariantCulture);
+
+                CurrentToken = new Token(numberString.ToCharArray(), number);
 
                 return;
             }
 
-            NextSymbolCore();
+            CurrentToken = new Token(new[] { CurrentSymbol });
 
-            CurrentToken = new Token(symbol);
+            NextSymbolCore();
         }
 
         protected override void NextSymbolCore()
