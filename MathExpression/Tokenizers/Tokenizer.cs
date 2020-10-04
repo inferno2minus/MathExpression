@@ -44,13 +44,9 @@ namespace I2M.MathExpression.Tokenizers
         {
             var stringBuilder = new StringBuilder();
 
-            var haveDecimalPoint = false;
-
-            while (CurrentSymbol.IsDigit() || CurrentSymbol.IsDecimalPoint() && !haveDecimalPoint)
+            while (CurrentSymbol.IsDigit() || CurrentSymbol.IsDecimalPoint())
             {
                 stringBuilder.Append(CurrentSymbol);
-
-                haveDecimalPoint = CurrentSymbol.IsDecimalPoint();
 
                 NextSymbolCore();
             }
