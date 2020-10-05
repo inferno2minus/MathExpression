@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
-using I2M.MathExpression.Operations;
+using I2M.MathExpression.Interfaces;
 using I2M.MathExpression.Tokenizers;
-using System.IO;
+using Moq;
+using System.Collections.Generic;
 using Xunit;
 
 namespace I2M.MathExpression.Tests
@@ -12,15 +13,43 @@ namespace I2M.MathExpression.Tests
         public void ParseExpression_ExpressionString_ReturnsExpectedEval()
         {
             // Arrange
-            const string expressionString = "-((10 + 20) - 5 * 5 + 2 * 2)";
+            var tokens = new Queue<Token>(new[]
+            {
+                new Token(new[] {'-'}),
+                new Token(new[] {'('}),
+                new Token(new[] {'('}),
+                new Token(new[] {'1', '0'}, 10),
+                new Token(new[] {'+'}),
+                new Token(new[] {'2', '0'}, 20),
+                new Token(new[] {')'}),
+                new Token(new[] {'-'}),
+                new Token(new[] {'5'}, 5),
+                new Token(new[] {'*'}),
+                new Token(new[] {'5'}, 5),
+                new Token(new[] {'+'}),
+                new Token(new[] {'2'}, 2),
+                new Token(new[] {'*'}),
+                new Token(new[] {'2'}, 2),
+                new Token(new[] {')'}),
+                new Token(new[] {'\0'})
+            });
 
-            using var reader = new StringReader(expressionString);
-            var tokenizer = new Tokenizer(reader);
-            var operationFactory = new OperationFactory();
-            var engine = new MathExpressionEngine(operationFactory);
+            var tokenizerMock = new Mock<ITokenizer>();
+            var operationFactoryMock = new Mock<IOperationFactory>();
+            var engine = new MathExpressionEngine(operationFactoryMock.Object);
+
+            Token token = null;
+
+            tokenizerMock.Setup(x => x.Init()).Callback(() => token = tokens.Dequeue());
+            tokenizerMock.Setup(x => x.NextToken()).Callback(() => token = tokens.Dequeue());
+            tokenizerMock.SetupGet(x => x.CurrentToken).Returns(() => token);
+
+            operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('+')).Returns(() => (a, b) => a + b);
+            operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('-')).Returns(() => (a, b) => a - b);
+            operationFactoryMock.Setup(x => x.CreateHighPriorityOperation('*')).Returns(() => (a, b) => a * b);
 
             // Act
-            var result = engine.ParseExpression(tokenizer).Eval();
+            var result = engine.ParseExpression(tokenizerMock.Object).Eval();
 
             // Assert
             result.Should().Be(-9);
