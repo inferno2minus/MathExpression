@@ -10,7 +10,7 @@ namespace I2M.MathExpression.Tests
     public class MathExpressionEngineTest
     {
         [Fact]
-        public void ParseExpression_ValidExpression_ReturnsExpectedEval()
+        public void ParseExpression_ValidExpression_ReturnsParsedResult()
         {
             // Arrange
             var tokens = new Queue<Token>(new[]
