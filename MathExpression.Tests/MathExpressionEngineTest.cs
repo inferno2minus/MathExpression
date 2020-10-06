@@ -44,9 +44,9 @@ namespace I2M.MathExpression.Tests
             tokenizerMock.Setup(x => x.NextToken()).Callback(() => token = tokens.Dequeue());
             tokenizerMock.SetupGet(x => x.CurrentToken).Returns(() => token);
 
-            operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('+')).Returns(() => (a, b) => a + b);
-            operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('-')).Returns(() => (a, b) => a - b);
-            operationFactoryMock.Setup(x => x.CreateHighPriorityOperation('*')).Returns(() => (a, b) => a * b);
+            operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('+')).Returns((a, b) => a + b);
+            operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('-')).Returns((a, b) => a - b);
+            operationFactoryMock.Setup(x => x.CreateHighPriorityOperation('*')).Returns((a, b) => a * b);
 
             // Act
             var result = engine.ParseExpression(tokenizerMock.Object).Eval();
