@@ -7,7 +7,7 @@ namespace I2M.MathExpression.Tests
     public class OperationFactoryTest
     {
         [Fact]
-        public void CreateHighPriorityOperation_DivideSymbol_ReturnsExpectedOperation()
+        public void CreateHighPriorityOperation_DivideSymbol_ReturnsDivideOperation()
         {
             // Arrange
             const char divideSymbol = '/';
@@ -23,7 +23,7 @@ namespace I2M.MathExpression.Tests
         }
 
         [Fact]
-        public void CreateHighPriorityOperation_MultiplySymbol_ReturnsExpectedOperation()
+        public void CreateHighPriorityOperation_MultiplySymbol_ReturnsMultiplyOperation()
         {
             // Arrange
             const char multiplySymbol = '*';
@@ -39,7 +39,7 @@ namespace I2M.MathExpression.Tests
         }
 
         [Fact]
-        public void CreateLowPriorityOperation_AddSymbol_ReturnsExpectedOperation()
+        public void CreateLowPriorityOperation_AddSymbol_ReturnsAddOperation()
         {
             // Arrange
             const char addSymbol = '+';
@@ -55,7 +55,7 @@ namespace I2M.MathExpression.Tests
         }
 
         [Fact]
-        public void CreateLowPriorityOperation_SubtractSymbol_ReturnsExpectedOperation()
+        public void CreateLowPriorityOperation_SubtractSymbol_ReturnsSubtractOperation()
         {
             // Arrange
             const char subtractSymbol = '-';

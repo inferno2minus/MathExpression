@@ -10,7 +10,7 @@ namespace I2M.MathExpression.Tests
     public class MathExpressionEngineTest
     {
         [Fact]
-        public void ParseExpression_ExpressionString_ReturnsExpectedEval()
+        public void ParseExpression_ValidExpression_ReturnsParsedResult()
         {
             // Arrange
             var tokens = new Queue<Token>(new[]
@@ -44,9 +44,9 @@ namespace I2M.MathExpression.Tests
             tokenizerMock.Setup(x => x.NextToken()).Callback(() => token = tokens.Dequeue());
             tokenizerMock.SetupGet(x => x.CurrentToken).Returns(() => token);
 
-            operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('+')).Returns(() => (a, b) => a + b);
-            operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('-')).Returns(() => (a, b) => a - b);
-            operationFactoryMock.Setup(x => x.CreateHighPriorityOperation('*')).Returns(() => (a, b) => a * b);
+            operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('+')).Returns((a, b) => a + b);
+            operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('-')).Returns((a, b) => a - b);
+            operationFactoryMock.Setup(x => x.CreateHighPriorityOperation('*')).Returns((a, b) => a * b);
 
             // Act
             var result = engine.ParseExpression(tokenizerMock.Object).Eval();

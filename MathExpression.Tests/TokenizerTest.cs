@@ -9,7 +9,7 @@ namespace I2M.MathExpression.Tests
     public class TokenizerTest
     {
         [Fact]
-        public void Init_SymbolString_ReturnsExpectedSymbol()
+        public void Init_SymbolString_ReturnsSymbol()
         {
             // Arrange
             const string symbolString = "-";
@@ -25,7 +25,7 @@ namespace I2M.MathExpression.Tests
         }
 
         [Fact]
-        public void Init_IntegerNumberString_ReturnsExpectedNumber()
+        public void Init_IntegerNumberString_ReturnsIntegerNumber()
         {
             // Arrange
             const string integerNumberString = "10";
@@ -41,7 +41,7 @@ namespace I2M.MathExpression.Tests
         }
 
         [Fact]
-        public void Init_DoubleNumberString_ReturnsExpectedNumber()
+        public void Init_DoubleNumberString_ReturnsDoubleNumber()
         {
             // Arrange
             const string doubleNumbersString = "10.5";
@@ -57,7 +57,7 @@ namespace I2M.MathExpression.Tests
         }
 
         [Fact]
-        public void NextToken_SymbolsString_ReturnsExpectedSymbol()
+        public void NextToken_SymbolsString_ReturnsSymbol()
         {
             // Arrange
             const string symbolsString = "- +";
@@ -74,7 +74,7 @@ namespace I2M.MathExpression.Tests
         }
 
         [Fact]
-        public void NextToken_IntegerNumbersString_ReturnsExpectedNumber()
+        public void NextToken_IntegerNumbersString_ReturnsIntegerNumber()
         {
             // Arrange
             const string integerNumbersString = "10 20";
@@ -91,7 +91,7 @@ namespace I2M.MathExpression.Tests
         }
 
         [Fact]
-        public void NextToken_DoubleNumbersString_ReturnsExpectedNumber()
+        public void NextToken_DoubleNumbersString_ReturnsDoubleNumber()
         {
             // Arrange
             const string doubleNumbersString = "10.5 .5";
