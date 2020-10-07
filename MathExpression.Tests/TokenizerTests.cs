@@ -6,7 +6,7 @@ using Xunit;
 
 namespace I2M.MathExpression.Tests
 {
-    public class TokenizerTest
+    public class TokenizerTests
     {
         [Fact]
         public void Init_SymbolString_ReturnsSymbol()
