@@ -7,7 +7,7 @@ using Xunit;
 
 namespace I2M.MathExpression.Tests
 {
-    public class MathExpressionEngineTest
+    public class MathExpressionEngineTests
     {
         [Fact]
         public void ParseExpression_ValidExpression_ReturnsParsedResult()

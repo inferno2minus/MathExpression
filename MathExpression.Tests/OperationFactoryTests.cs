@@ -4,7 +4,7 @@ using Xunit;
 
 namespace I2M.MathExpression.Tests
 {
-    public class OperationFactoryTest
+    public class OperationFactoryTests
     {
         [Fact]
         public void CreateHighPriorityOperation_DivideSymbol_ReturnsDivideOperation()
