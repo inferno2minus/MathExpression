@@ -13,7 +13,7 @@ namespace I2M.MathExpression
 
         public MathExpressionEngine(IOperationFactory operationFactory)
         {
-            _operationFactory = operationFactory;
+            _operationFactory = operationFactory ?? throw new ArgumentNullException(nameof(operationFactory));
         }
 
         public IExpression ParseExpression(ITokenizer tokenizer)
