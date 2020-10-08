@@ -1,5 +1,6 @@
 ﻿using I2M.MathExpression.Exceptions;
 using I2M.MathExpression.Infrastructure;
+using I2M.MathExpression.Interfaces;
 using I2M.MathExpression.Tokenizers;
 using System.Linq;
 
@@ -7,6 +8,20 @@ namespace I2M.MathExpression.Extensions
 {
     public static class TokenExtensions
     {
+        public static void EnsureExpectedSymbol(this Token value, IOperationFactory operationFactory)
+        {
+            var supportedSymbols = new[] { Symbols.Eof, Symbols.RightBracket };
+
+            if (value == null || operationFactory == null) return;
+
+            var symbol = value.Symbols.First();
+
+            if (!supportedSymbols.Contains(symbol) && !operationFactory.IsSupportedOperation(symbol))
+            {
+                throw new ExpressionParseException($"Unexpected symbol: {value}");
+            }
+        }
+
         public static void EnsureEndOfFileSymbol(this Token value)
         {
             if (value?.Symbols.First() != Symbols.Eof)

@@ -16,7 +16,7 @@ namespace I2M.MathExpression.App
 
                 var expression = Console.ReadLine();
 
-                if (expression == null) continue;
+                if (string.IsNullOrEmpty(expression)) continue;
 
                 if (expression.Equals("exit", StringComparison.OrdinalIgnoreCase)) break;
 

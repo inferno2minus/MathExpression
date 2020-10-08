@@ -7,22 +7,23 @@ using System.Linq;
 
 namespace I2M.MathExpression
 {
-    public class MathExpressionParser : IMathExpressionParser
+    internal class MathExpressionParser : IMathExpressionParser
     {
-        private readonly Func<char, Func<double, double, double>> _operationFactory;
+        private readonly Func<char, Func<double, double, double>> _createOperation;
         private readonly Func<ITokenizer, IExpression> _expression;
 
         private static IMathExpressionParser _expressionParser;
+        private static IOperationFactory _operationFactory;
 
-        private MathExpressionParser(Func<char, Func<double, double, double>> operationFactory, Func<ITokenizer, IExpression> expression)
+        private MathExpressionParser(Func<char, Func<double, double, double>> createOperation, Func<ITokenizer, IExpression> expression)
         {
-            _operationFactory = operationFactory;
+            _createOperation = createOperation;
             _expression = expression;
         }
 
         public static IMathExpressionParser CreateParser(IOperationFactory operationFactory)
         {
-            if (operationFactory == null) throw new ArgumentNullException(nameof(operationFactory));
+            _operationFactory = operationFactory ?? throw new ArgumentNullException(nameof(operationFactory));
 
             var highPriorityParser = new MathExpressionParser(operationFactory.CreateHighPriorityOperation, ParseUnary);
             var lowPriorityParser = new MathExpressionParser(operationFactory.CreateLowPriorityOperation, highPriorityParser.Parse);
@@ -40,7 +41,9 @@ namespace I2M.MathExpression
 
             while (true)
             {
-                var operation = _operationFactory(tokenizer.CurrentToken.Symbols.First());
+                tokenizer.CurrentToken.EnsureExpectedSymbol(_operationFactory);
+
+                var operation = _createOperation(tokenizer.CurrentToken.Symbols.First());
 
                 if (operation == null) return leftExpression;
 
@@ -61,7 +64,7 @@ namespace I2M.MathExpression
                 if (TyeGetNumberExpression(tokenizer, out var numberExpression)) return numberExpression;
                 if (TryGetBracketExpression(tokenizer, out var bracketExpression)) return bracketExpression;
 
-                throw new ExpressionParseException($"Unexpected symbol: {tokenizer.CurrentToken.Symbols.First()}");
+                throw new ExpressionParseException($"Unexpected symbol: {tokenizer.CurrentToken}");
             }
         }
 
