@@ -13,6 +13,7 @@ namespace I2M.MathExpression
         private readonly Func<ITokenizer, IExpression> _expression;
 
         private static IMathExpressionParser _expressionParser;
+        private static IOperationFactory _operationFactory;
 
         private MathExpressionParser(Func<char, Func<double, double, double>> createOperation, Func<ITokenizer, IExpression> expression)
         {
@@ -22,7 +23,7 @@ namespace I2M.MathExpression
 
         public static IMathExpressionParser CreateParser(IOperationFactory operationFactory)
         {
-            if (operationFactory == null) throw new ArgumentNullException(nameof(operationFactory));
+            _operationFactory = operationFactory ?? throw new ArgumentNullException(nameof(operationFactory));
 
             var highPriorityParser = new MathExpressionParser(operationFactory.CreateHighPriorityOperation, ParseUnary);
             var lowPriorityParser = new MathExpressionParser(operationFactory.CreateLowPriorityOperation, highPriorityParser.Parse);
@@ -40,6 +41,8 @@ namespace I2M.MathExpression
 
             while (true)
             {
+                tokenizer.CurrentToken.EnsureExpectedSymbol(_operationFactory);
+
                 var operation = _createOperation(tokenizer.CurrentToken.Symbols.First());
 
                 if (operation == null) return leftExpression;

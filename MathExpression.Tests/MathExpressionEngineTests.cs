@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
+using I2M.MathExpression.Exceptions;
 using I2M.MathExpression.Interfaces;
 using I2M.MathExpression.Tokenizers;
 using Moq;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -45,6 +47,7 @@ namespace I2M.MathExpression.Tests
             tokenizerMock.Setup(x => x.NextToken()).Callback(() => token = tokens.Dequeue());
             tokenizerMock.SetupGet(x => x.CurrentToken).Returns(() => token);
 
+            operationFactoryMock.Setup(x => x.IsSupportedOperation(It.IsAny<char>())).Returns(true);
             operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('+')).Returns((a, b) => a + b);
             operationFactoryMock.Setup(x => x.CreateLowPriorityOperation('-')).Returns((a, b) => a - b);
             operationFactoryMock.Setup(x => x.CreateHighPriorityOperation('*')).Returns((a, b) => a * b);
@@ -54,6 +57,38 @@ namespace I2M.MathExpression.Tests
 
             // Assert
             result.Should().Be(-9);
+        }
+
+        [Fact]
+        public void ParseExpression_UnexpectedSymbol_ThrowsParseExpressionException()
+        {
+            // Arrange
+            var tokens = new Queue<Token>(new[]
+            {
+                // 1 $ 2
+                new Token(new[] {'1'}, 1),
+                new Token(new[] {'$'}),
+                new Token(new[] {'2'}, 2),
+                new Token(new[] {'\0'})
+            });
+
+            var tokenizerMock = new Mock<ITokenizer>();
+            var operationFactoryMock = new Mock<IOperationFactory>();
+            var engine = new MathExpressionEngine(operationFactoryMock.Object);
+
+            Token token = null;
+
+            tokenizerMock.Setup(x => x.Init()).Callback(() => token = tokens.Dequeue());
+            tokenizerMock.Setup(x => x.NextToken()).Callback(() => token = tokens.Dequeue());
+            tokenizerMock.SetupGet(x => x.CurrentToken).Returns(() => token);
+
+            operationFactoryMock.Setup(x => x.IsSupportedOperation(It.IsAny<char>())).Returns(false);
+
+            // Act
+            Action result = () => engine.ParseExpression(tokenizerMock.Object);
+
+            // Assert
+            result.Should().Throw<ExpressionParseException>().WithMessage("Unexpected symbol: $");
         }
     }
 }
