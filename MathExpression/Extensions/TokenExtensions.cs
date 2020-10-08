@@ -10,13 +10,13 @@ namespace I2M.MathExpression.Extensions
     {
         public static void EnsureExpectedSymbol(this Token value, IOperationFactory operationFactory)
         {
-            var supportedSymbols = new[] { Symbols.Eof, Symbols.RightBracket };
+            var expectedSymbols = new[] { Symbols.Eof, Symbols.RightBracket };
 
             if (value == null || operationFactory == null) return;
 
             var symbol = value.Symbols.First();
 
-            if (!supportedSymbols.Contains(symbol) && !operationFactory.IsSupportedOperation(symbol))
+            if (!expectedSymbols.Contains(symbol) && !operationFactory.IsSupportedOperation(symbol))
             {
                 throw new ExpressionParseException($"Unexpected symbol: {value}");
             }
