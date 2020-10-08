@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace I2M.MathExpression.Tokenizers
 {
@@ -12,5 +13,7 @@ namespace I2M.MathExpression.Tokenizers
             Symbols = symbols;
             Number = number;
         }
+
+        public override string ToString() => Symbols.First() == Infrastructure.Symbols.Eof ? "<EOF>" : new string(Symbols.ToArray());
     }
 }

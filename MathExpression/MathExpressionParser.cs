@@ -61,7 +61,7 @@ namespace I2M.MathExpression
                 if (TyeGetNumberExpression(tokenizer, out var numberExpression)) return numberExpression;
                 if (TryGetBracketExpression(tokenizer, out var bracketExpression)) return bracketExpression;
 
-                throw new ExpressionParseException($"Unexpected symbol: {tokenizer.CurrentToken.Symbols.First()}");
+                throw new ExpressionParseException($"Unexpected symbol: {tokenizer.CurrentToken}");
             }
         }
 
