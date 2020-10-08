@@ -15,6 +15,7 @@ namespace I2M.MathExpression.Tests
             // Arrange
             var tokens = new Queue<Token>(new[]
             {
+                // -((10 + 20) - 5 * 5 + 2 * 2)
                 new Token(new[] {'-'}),
                 new Token(new[] {'('}),
                 new Token(new[] {'('}),
