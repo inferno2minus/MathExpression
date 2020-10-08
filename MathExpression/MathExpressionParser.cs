@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace I2M.MathExpression
 {
-    public class MathExpressionParser : IMathExpressionParser
+    internal class MathExpressionParser : IMathExpressionParser
     {
         private readonly Func<char, Func<double, double, double>> _operationFactory;
         private readonly Func<ITokenizer, IExpression> _expression;
