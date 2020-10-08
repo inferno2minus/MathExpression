@@ -9,14 +9,14 @@ namespace I2M.MathExpression
 {
     internal class MathExpressionParser : IMathExpressionParser
     {
-        private readonly Func<char, Func<double, double, double>> _operationFactory;
+        private readonly Func<char, Func<double, double, double>> _createOperation;
         private readonly Func<ITokenizer, IExpression> _expression;
 
         private static IMathExpressionParser _expressionParser;
 
-        private MathExpressionParser(Func<char, Func<double, double, double>> operationFactory, Func<ITokenizer, IExpression> expression)
+        private MathExpressionParser(Func<char, Func<double, double, double>> createOperation, Func<ITokenizer, IExpression> expression)
         {
-            _operationFactory = operationFactory;
+            _createOperation = createOperation;
             _expression = expression;
         }
 
@@ -40,7 +40,7 @@ namespace I2M.MathExpression
 
             while (true)
             {
-                var operation = _operationFactory(tokenizer.CurrentToken.Symbols.First());
+                var operation = _createOperation(tokenizer.CurrentToken.Symbols.First());
 
                 if (operation == null) return leftExpression;
 
