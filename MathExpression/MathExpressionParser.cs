@@ -59,7 +59,7 @@ namespace I2M.MathExpression
         {
             while (true)
             {
-                if (IsPositiveTokenType(tokenizer)) continue;
+                if (IsPositiveToken(tokenizer)) continue;
                 if (TryGetNegativeExpression(tokenizer, out var negativeExpression)) return negativeExpression;
                 if (TyeGetNumberExpression(tokenizer, out var numberExpression)) return numberExpression;
                 if (TryGetBracketExpression(tokenizer, out var bracketExpression)) return bracketExpression;
@@ -68,7 +68,7 @@ namespace I2M.MathExpression
             }
         }
 
-        private static bool IsPositiveTokenType(ITokenizer tokenizer)
+        private static bool IsPositiveToken(ITokenizer tokenizer)
         {
             if (tokenizer.CurrentToken.IsAddSymbol())
             {
